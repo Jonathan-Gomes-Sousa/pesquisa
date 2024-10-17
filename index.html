@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Pesquisa de Satisfação</title>
+</head>
+<body>
+    <form id="satisfaction-form">
+        <h2>Pesquisa de Satisfação</h2>
+        <p>Como você avaliaria nossos serviços?</p>
+        <ul>
+            <li>
+                <input type="radio" id="ruim" name="satisfaction" value="ruim" required>
+                <label for="ruim">Ruim 😠</label>
+            </li>
+            <li>
+                <input type="radio" id="regular" name="satisfaction" value="regular">
+                <label for="regular">Regular 😐</label>
+            </li>
+            <li>
+                <input type="radio" id="bom" name="satisfaction" value="bom">
+                <label for="bom">Bom 🙂</label>
+            </li>
+            <li>
+                <input type="radio" id="muito-bom" name="satisfaction" value="muito-bom">
+                <label for="muito-bom">Muito Bom 😊</label>
+            </li>
+        </ul>
+        <button type="submit">Enviar</button>
+    </form>
+    <script src="script.js"></script>
+</body>
+</html>
