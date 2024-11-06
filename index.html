@@ -1,35 +1,178 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Pesquisa de Satisfação</title>
+    <title>MSV-PESQUISA</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('img/msv-logo.png');
+            background-size: cover;
+            background-position: center;
+        }
+        .overlay {
+            position: fixed;
+            inset: 0;
+           /* background: rgba(255, 255, 255, 0.8);*/
+        }
+        .card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 32rem;
+            width: 60%;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .emoji-button {
+            aspect-ratio: 1;
+            font-size: 2.5rem;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .emoji-button:hover {
+            background: #f8fafc;
+        }
+        .emoji-button.selected {
+            border: 4px solid #05db21;
+            background: #eff6ff;
+        }
+        .emoji-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+        .submit-button {
+            width: 100%;
+            background: #04e321;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .submit-button:hover {
+            background: #218e03;
+        }
+        .offline-message {
+            text-align: center;
+            color: #b45309;
+            margin-top: 1rem;
+            display: none;
+        }
+        .offline-message.visible {
+            display: block;
+        }
+        img{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
 </head>
 <body>
-    <form id="satisfaction-form">
-        <h2>Pesquisa de Satisfação</h2>
-        <p>Como você avaliaria nossos serviços?</p>
-        <ul>
-            <li>
-                <input type="radio" id="ruim" name="satisfaction" value="ruim" required>
-                <label for="ruim">Ruim 😠</label>
-            </li>
-            <li>
-                <input type="radio" id="regular" name="satisfaction" value="regular">
-                <label for="regular">Regular 😐</label>
-            </li>
-            <li>
-                <input type="radio" id="bom" name="satisfaction" value="bom">
-                <label for="bom">Bom 🙂</label>
-            </li>
-            <li>
-                <input type="radio" id="muito-bom" name="satisfaction" value="muito-bom">
-                <label for="muito-bom">Muito Bom 😊</label>
-            </li>
-        </ul>
-        <button type="submit">Enviar</button>
-    </form>
-    <script src="script.js"></script>
+    <div class="overlay"></div>
+    <div class="card">
+        <h1>COMO FOI SUA EXPERIÊNCIA NA TIROLESA?</h1>
+        <div class="emoji-grid">
+            <button class="emoji-button" data-id="MUITO-SATISFEITO"><span><!-- 😃 --><img src="img/5.png" alt=""></span><span class="emoji-label">Muito Satisfeito</span></button>
+            <button class="emoji-button" data-id="SATISFEITO"><span><!-- 🙂 --><img src="img/4.png" alt=""></span><span class="emoji-label">Satisfeito</span></button>
+            <button class="emoji-button" data-id="INSATISFEITO"><span><!-- 😟 --><img src="img/2.png" alt=""></span><span class="emoji-label">Insatisfeito</span></button>
+            <button class="emoji-button" data-id="MUITO-INSATISFEITO"><span><!-- 😡 --><img src="img/1.png" alt=""></span><span class="emoji-label">Muito Insatisfeito</span></button>
+            
+            
+            
+        </div>
+        <button class="submit-button" type="button" onclick="enviarDados()">Enviar</button>
+    </div>
+    <script>
+        let selectedEmoji = null;
+
+        document.querySelectorAll('.emoji-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.emoji-button').forEach(b => b.classList.remove('selected'));
+                button.classList.add('selected');
+                selectedEmoji = button.getAttribute('data-id');
+            });
+        });
+
+        function enviarDados() {
+            if (!selectedEmoji) {
+                alert('Por favor, selecione uma opção.');
+                return;
+            }
+
+            const valorSelecionado = selectedEmoji;
+            // Check for internet connectivity
+            if (navigator.onLine) {
+                // If online, send data to Google Sheet directly
+               // const url = 'https://script.google.com/macros/s/AKfycbyIoRj_u5WPRBTB6ihGs9DYS1y2Kq8Fwaze2d08K9nJQKjs_WKtPJJKyn1u_au4t3ft/exec?valor=' + valorSelecionado;
+                const url = 'https://script.google.com/macros/s/AKfycbz-eYfQnFlSBZ5vsJ8si8MLUEeBQz3anm5oYUHi9c9aqnQ_4D8JXBiYYe5KzegN3sVUAA/exec?valor=' + valorSelecionado;
+                fetch(url)
+                    .then(response => response.text())
+                    .then(data => {
+                        alert(data); // Exibe a resposta do servidor
+                        console.log(data);
+                        location.reload();
+                        // Clear any pending responses from localStorage
+                        localStorage.removeItem('pendingResponses');
+                    })
+                    .catch(error => {
+                        console.error('Erro ao enviar os dados:', error);
+                    });
+            } else {
+                // If offline, store data in localStorage
+                const pendingResponses = localStorage.getItem('pendingResponses') || '[]';
+                const responses = JSON.parse(pendingResponses);
+                responses.push(valorSelecionado);
+                localStorage.setItem('pendingResponses', JSON.stringify(responses));
+                alert('Sua resposta foi salva localmente. Será enviada quando a internet voltar.');
+            }
+        }
+
+        // Check for pending responses on page load (in case user was previously offline)
+        function sendPendingResponses() {
+            const pendingResponses = localStorage.getItem('pendingResponses');
+            if (pendingResponses) {
+                const responses = JSON.parse(pendingResponses);
+                for (const response of responses) {
+                    enviarDados(response); // Reuse enviarDados function with each pending response
+                }
+                localStorage.removeItem('pendingResponses'); // Clear localStorage after sending
+            }
+        }
+
+        // Call sendPendingResponses on page load
+        sendPendingResponses();
+    </script>
 </body>
 </html>
